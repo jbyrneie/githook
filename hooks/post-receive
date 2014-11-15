@@ -1,0 +1,20 @@
+#!/bin/bash
+
+while read oldrev newrev ref
+do
+  branch=`echo $ref | cut -d/ -f3`
+  if [ "production" == "$branch" -o "master" == "$branch" ]; then
+    
+    git --work-tree=~/public_html/ checkout -f $branch
+    
+    echo 'Changes pushed to Amazon EC2 PROD.'
+  fi
+
+  if [ "smoke" == "$branch" ]; then
+    
+    git --work-tree=~/public_html/smoke/ checkout -f $branch
+    
+    echo 'Changes pushed to Amazon EC2 PROD smoke box.'
+  fi
+done
+
